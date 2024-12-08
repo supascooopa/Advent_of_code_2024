@@ -1,9 +1,9 @@
-from input_parser import take_input, input_splitting
+from input_parser import take_input, day_one_column_splitting
 
 
 def day_one_part_one():
     raw_input = take_input("input_day_one_part_one.txt")
-    split_input = input_splitting(raw_input)
+    split_input = day_one_column_splitting(raw_input)
     left_column = split_input[0]
     right_column = split_input[1]
     difference_list = []
@@ -31,7 +31,7 @@ def day_one_part_one():
 
 def day_one_part_two():
     raw_input = take_input("input_day_one_part_one.txt")
-    split_input = input_splitting(raw_input)
+    split_input = day_one_column_splitting(raw_input)
     left_column = split_input[0]
     right_column = split_input[1]
     occurrence_list = []

@@ -4,7 +4,7 @@ def take_input(file_name):
         return lines
 
 
-def input_splitting(input_list):
+def day_one_column_splitting(input_list):
     """
 
     :param input_list: a list of input.
@@ -20,8 +20,3 @@ def input_splitting(input_list):
         column_right.append(int(right_number))
     return column_left, column_right
 
-
-input_splitting(input_list=take_input("input_day_one_part_one.txt"))
-
-# print(len(column_left))
-# print(len(column_right))
