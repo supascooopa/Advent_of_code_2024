@@ -1,6 +1,6 @@
 def take_input(file_name):
     with open(file_name) as input_file:
-        lines = input_file.readlines()
+        lines = input_file.read().splitlines()
         return lines
 
 
@@ -20,3 +20,4 @@ def day_one_column_splitting(input_list):
         column_right.append(int(right_number))
     return column_left, column_right
 
+print(take_input("input_day_two.txt"))
