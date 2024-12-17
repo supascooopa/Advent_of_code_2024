@@ -42,7 +42,79 @@ def day_one_part_two():
     print(sum(occurrence_list))
 
 
+def day_two_part_one():
+    input_data = take_input("input_day_two.txt")
+    safety_list = []
 
+    for line_num, line in enumerate(input_data):
+        safety_flag = 1   # if safe then 1 else 0
+        line = line.split(" ")
+        base_level = int(line[0])
+        inc_or_dec = base_level - int(line[1])
+
+        if inc_or_dec < 0:
+            movement_change_flag = "inc"
+        elif inc_or_dec > 0:
+            movement_change_flag = "dec"
+        else:
+            safety_flag = 0
+            safety_list.append(safety_flag)
+
+        for level in line[1:len(line)]:
+            level_int = int(level)
+            threshold = base_level - level_int
+            # logic to see if the movement of numbers are always increasing or decreasing or staying the same
+            if threshold < 0:
+                movement_type = "inc"
+            elif threshold > 0:
+                movement_type = "dec"
+            else:
+                movement_type = movement_change_flag
+            # checks to see which way the movement was
+
+            if movement_change_flag != movement_type or -3 > threshold or threshold > 3 or threshold == 0:
+                    safety_flag = 0
+                    break
+            else:
+                base_level = level_int
+
+        safety_list.append(safety_flag)
+    print(safety_list.count(1))
+
+
+
+def day_two_part_two(input_data):
+    safety_checker = 0
+    for line in input_data:
+        safety_flag = 1  # if safe then 1 else 0
+        split_line = line.split(" ")
+        values = []
+        index_counter = 0
+        dampener_value = 0
+        split_line_length = len(split_line) - 1
+
+        for level in range(split_line_length):
+            level_int = int(split_line[level])
+            threshold = int(split_line[level + 1]) - level_int
+            values.append(threshold)
+        if all([3 >= i >= 1 for i in values]) or all([-3 <= i <= -1 for i in values]):
+            safety_checker += 1
+        else:
+            while index_counter != len(split_line):
+                copy_values = []
+                copy_split_lines = split_line.copy()
+                copy_split_lines.pop(index_counter)
+                for i in range(len(copy_split_lines) - 1):
+                    copy_level_int = int(copy_split_lines[i])
+                    diff = int(copy_split_lines[i + 1]) - copy_level_int
+                    copy_values.append(diff)
+                if all([3 >= i >= 1 for i in copy_values]) or all([-3 <= i <= -1 for i in copy_values]):
+                    safety_checker += 1
+                    index_counter = len(split_line)
+                else:
+                    index_counter += 1
+
+    print(safety_checker)
 
 
 
