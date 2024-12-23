@@ -1,5 +1,5 @@
 from input_parser import take_input, day_one_column_splitting
-
+import re
 
 def day_one_part_one():
     raw_input = take_input("input_day_one_part_one.txt")
@@ -116,8 +116,76 @@ def day_two_part_two(input_data):
 
     print(safety_checker)
 
+def day_three_part_one(input_data):
+    joined_input = "".join(input_data)
+    search_results = re.findall(r"mul\(\d{1,3},\d{1,3}\)", joined_input)
+    multiplication_results = []
+    for results in search_results:
+        split_result = results.split(",")
+        clean_left_number = int(split_result[0].strip("mul("))
+        clean_right_number = int(split_result[1].strip(")"))
+        multiplication_results.append(clean_left_number * clean_right_number)
+    print(sum(multiplication_results))
 
 
+def day_three_part_two(input_data):
+    joined_input = "".join(input_data)
+    example_input_split = joined_input.split("do()")
+    multiplication_results = []
+    for donts in example_input_split:
+        donts_split = donts.split("don't()")
+        dos = donts_split[0]
+        search_results = re.findall(r"mul\(\d{1,3},\d{1,3}\)", dos)
+        for results in search_results:
+            split_result = results.split(",")
+            clean_left_number = int(split_result[0].strip("mul("))
+            clean_right_number = int(split_result[1].strip(")"))
+            multiplication_results.append(clean_left_number * clean_right_number)
+    print(sum(multiplication_results))
 
 
+def day_four_part_one(input_data):
 
+    found_count = 0
+    check_conditions = "XMAS"
+    check_conditions_reversed = check_conditions[::-1]
+    all_directional_values = []
+    # horizontal check
+    for line in input_data:
+        found_count += line.count(check_conditions)
+        found_count += line.count(check_conditions_reversed)
+
+    # creates a list of individual letter from the input data
+    my_double_comprehension = [
+        i for line in input_data
+        for i in line
+    ]
+
+    # turns the list into a 2D array of size 140, 140
+    two_d_input_matrix = numpy.array(my_double_comprehension).reshape(140, 140)
+    for i in range(len(two_d_input_matrix)):
+        # check each "column"
+        column_value = "".join(two_d_input_matrix[0:141, i])
+        all_directional_values.append(column_value)
+
+        # check the diagonal going from left to right
+        diagonal_value = "".join(two_d_input_matrix.diagonal(i))
+        all_directional_values.append(diagonal_value)
+
+        # check the flipped diagonal going from right to left
+        flipped_diagonal = "".join(numpy.fliplr(two_d_input_matrix).diagonal(i))
+        all_directional_values.append(flipped_diagonal)
+
+        # once the first row is passed get then move down a row and check those diagonals
+        if i >= 1:
+            # remove the top most layer before getting the diagonal value.
+            sliced_ten_by_ten = two_d_input_matrix[i:]
+            diagonal_value = "".join(sliced_ten_by_ten.diagonal(0))
+            flipped_diagonal = "".join(numpy.fliplr(sliced_ten_by_ten).diagonal(0))
+            all_directional_values.append(diagonal_value)
+            all_directional_values.append(flipped_diagonal)
+
+    for direction in all_directional_values:
+        found_count += direction.count(check_conditions)
+        found_count += direction.count(check_conditions_reversed)
+    print(found_count)
